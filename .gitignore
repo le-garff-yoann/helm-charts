@@ -1,0 +1,5 @@
+*.swp
+charts/*/charts/
+charts/*/requirements.lock
+public/
+index.yaml

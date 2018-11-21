@@ -1,0 +1,28 @@
+---
+
+image:
+  name: linkyard/docker-helm:2.6.0
+  entrypoint: [ "/bin/sh", "-c" ]
+
+stages:
+  - test
+  - deploy
+
+lint Helm Charts:
+  stage: test
+  script:
+    - helm lint charts/*
+    - helm lint charts/*/charts/*
+
+pages:
+  stage: deploy
+  script:
+    - helm init --client-only
+    - mkdir -p public/
+    - helm package charts/* --dependency-update --destination public/
+    - helm repo index --url https://${CI_PROJECT_NAMESPACE}.gitlab.io/${CI_PROJECT_NAME} public/
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
