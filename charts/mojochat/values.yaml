@@ -51,3 +51,4 @@ postgresql:
 
   postgresDatabase: mojochat
   postgresUser: mojochat
+  postgresPassword: mojochat

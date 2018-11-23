@@ -1,7 +1,7 @@
 ---
 
 image:
-  name: linkyard/docker-helm:2.6.0
+  name: linkyard/docker-helm:2.11.0
   entrypoint: [ "/bin/sh", "-c" ]
 
 stages:
@@ -12,7 +12,6 @@ lint Helm Charts:
   stage: test
   script:
     - helm lint charts/*
-    - helm lint charts/*/charts/*
 
 pages:
   stage: deploy

@@ -26,13 +26,8 @@ spec:
           env:
             - name: MOJO_REVERSE_PROXY
               value: "1"
-            - name: MOJOCHAT_DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ template "mojochat.postgresql.fullname" . }}
-                  key: postgres-password
             - name: MOJOCHAT_PG
-              value: postgresql://{{ .Values.postgresql.postgresUser }}:$(MOJOCHAT_DB_PASSWORD)@{{ template "mojochat.postgresql.fullname" . }}/{{ .Values.postgresql.postgresDatabase }}
+              value: postgresql://{{ .Values.postgresql.postgresUser }}:{{ .Values.postgresql.postgresPassword }}@{{ template "mojochat.postgresql.fullname" . }}/{{ .Values.postgresql.postgresDatabase }}
           ports:
             - name: http
               containerPort: 8080
