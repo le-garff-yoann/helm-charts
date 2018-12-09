@@ -46,9 +46,15 @@ tolerations: []
 
 affinity: {}
 
-postgresql:
-  imageTag: "9.6.2"
+initContainer:
+  image:
+    repository: bitnami/postgresql
+    tag: "10.6.0"
+    pullPolicy: IfNotPresent
 
-  postgresDatabase: mojochat
-  postgresUser: mojochat
-  postgresPassword: mojochat
+postgresql:
+  postgresqlDatabase: mojochat
+  postgresqlUsername: mojochat
+  postgresqlPassword: mojochat
+  service:
+    port: 5432

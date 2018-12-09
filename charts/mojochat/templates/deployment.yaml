@@ -19,13 +19,21 @@ spec:
         app.kubernetes.io/name: {{ include "mojochat.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      initContainers:
+        - name: wait-for-db
+          image: "{{ .Values.initContainer.image.repository }}:{{ .Values.initContainer.image.tag }}"
+          imagePullPolicy: {{ .Values.initContainer.image.imagePullPolicy }}
+          command:
+            - "sh"
+            - "-c"
+            - "until pg_isready -h '{{ template "mojochat.postgresql.fullname" . }}' -p {{ .Values.postgresql.service.port }} -d '{{ .Values.postgresql.postgresqlDatabase }}' -U '{{ .Values.postgresql.postgresqlUsername }}'; do sleep 5; done"
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: MOJOCHAT_PG
-              value: postgresql://{{ .Values.postgresql.postgresUser }}:{{ .Values.postgresql.postgresPassword }}@{{ template "mojochat.postgresql.fullname" . }}/{{ .Values.postgresql.postgresDatabase }}?sslmode=disable
+              value: postgresql://{{ .Values.postgresql.postgresqlUsername }}:{{ .Values.postgresql.postgresqlPassword }}@{{ template "mojochat.postgresql.fullname" . }}:{{ .Values.postgresql.service.port }}/{{ .Values.postgresql.postgresqlDatabase }}?sslmode=disable
           ports:
             - name: http
               containerPort: 8080
