@@ -1,6 +1,6 @@
 # Helm Charts
 
-![Build Status](https://gitlab.com/le-garff-yoann/helm-charts/badges/master/build.svg)
+[![pipeline status](https://gitlab.com/le-garff-yoann/helm-charts/badges/master/pipeline.svg)](https://gitlab.com/le-garff-yoann/helm-charts/pipelines)
 
 ## TL;DR
 
