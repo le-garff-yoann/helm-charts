@@ -1,6 +1,6 @@
 # mojochat
 
-Image pulled from [mojochat](https://gitlab.com/le-garff-yoann/mojochat).
+This chart deploys [mojochat](https://github.com/le-garff-yoann/mojochat).
 
 ## TL;DR;
 
