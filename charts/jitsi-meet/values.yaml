@@ -1,0 +1,109 @@
+# Default values for jitsi-meet.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+web:
+  image:
+    repository: jitsi/web
+    # tag: "1.0.1"
+    pullPolicy: IfNotPresent
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+  replicaCount: 1
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #  cpu: 100m
+    #  memory: 128Mi
+    # requests:
+    #  cpu: 100m
+    #  memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  env: []
+
+prosody:
+  image:
+    repository: jitsi/prosody
+    pullPolicy: IfNotPresent
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+  replicaCount: 1
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  env:
+    XMPP_MODULES:
+    XMPP_MUC_MODULES: 
+    XMPP_INTERNAL_MUC_MODULES: 
+    JIGASI_XMPP_USER: 
+    JIGASI_XMPP_PASSWORD: 
+
+jicofo:
+  image:
+    repository: jitsi/jicofo
+    pullPolicy: IfNotPresent
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+  replicaCount: 1
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  env:
+    JIGASI_BREWERY_MUC: 
+
+jvb:
+  image:
+    repository: jitsi/jvb
+    pullPolicy: IfNotPresent
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+  replicaCount: 1
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+  env:
+    JVB_PORT:
+    JVB_TCP_HARVESTER_DISABLED:
+    JVB_TCP_PORT:
+    JVB_STUN_SERVERS:
+    JVB_ENABLE_APIS:
+
+env:
+  ENABLE_AUTH: 0
+  ENABLE_GUESTS: 1
+  JICOFO_AUTH_USER: focus
+  JICOFO_COMPONENT_SECRET:
+  JICOFO_AUTH_PASSWORD:
+  XMPP_DOMAIN: meet.jitsi # aliase
+  XMPP_SERVER: xmpp.meet.jitsi # aliase
+  XMPP_AUTH_DOMAIN: auth.meet.jitsi # aliase
+  XMPP_BOSH_URL_BASE: http://xmpp.meet.jitsi:5280
+  XMPP_GUEST_DOMAIN: guest.meet.jitsi
+  XMPP_MUC_DOMAIN: muc.meet.jitsi
+  XMPP_INTERNAL_MUC_DOMAIN: 
+  JVB_AUTH_USER:
+  JVB_AUTH_PASSWORD:
+  JVB_BREWERY_MUC: 
+  TZ: Europe/Amsterdam
+
+# TODO: aliases, $CONFIG, ...

@@ -1,0 +1,106 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ include " jitsi-meet.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include " jitsi-meet.name" . }}
+    helm.sh/chart: {{ include " jitsi-meet.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include " jitsi-meet.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include " jitsi-meet.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}_web
+          image: "{{ .Values.web.image.repository }}:{{ .default "latest" Values.web.image.tag }}"
+          imagePullPolicy: {{ .Values.web.image.pullPolicy }}
+          env:
+            - name: HTTP_PORT
+              value: 80
+            - name: ENABLE_LETSENCRYPT
+              value: 0
+            - name: ENABLE_HTTP_REDIRECT
+              value: 0
+            - name: DISABLE_HTTPS
+              value: 1
+          ports: []
+          resources:
+{{ toYaml .Values.web.resources | indent 12 }}
+    {{- with .Values.web.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.web.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.web.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+        - name: {{ .Chart.Name }}_prosody
+          image: "{{ .Values.prosody.image.repository }}:{{ .Values.prosody.image.tag }}"
+          imagePullPolicy: {{ .Values.prosody.image.pullPolicy }}
+          env: []
+          ports: []
+          resources:
+{{ toYaml .Values.prosody.resources | indent 12 }}
+    {{- with .Values.prosody.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.prosody.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.prosody.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+        - name: {{ .Chart.Name }}_jicofo
+          image: "{{ .Values.jicofo.image.repository }}:{{ .Values.jicofo.image.tag }}"
+          imagePullPolicy: {{ .Values.jicofo.image.pullPolicy }}
+          env: []
+          ports: []
+          resources:
+{{ toYaml .Values.jicofo.resources | indent 12 }}
+    {{- with .Values.jicofo.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.jicofo.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.jicofo.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+        - name: {{ .Chart.Name }}_jvb
+          image: "{{ .Values.jvb.image.repository }}:{{ .Values.jvb.image.tag }}"
+          imagePullPolicy: {{ .Values.jvb.image.pullPolicy }}
+          env: []
+          ports: []
+          resources:
+{{ toYaml .Values.jvb.resources | indent 12 }}
+    {{- with .Values.jvb.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.jvb.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.jvb.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
